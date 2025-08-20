@@ -5,7 +5,7 @@ import {
   changePassword,
   deleteUser,
 } from "../controllers/user.controller.js";
-import { authenticateJWT } from "../middleware/auth.js";
+import { AuthMiddleware } from "../middleware/auth.middleware.js";
 import { validateBody } from "../middleware/validate.js";
 import { z } from "zod";
 
@@ -21,19 +21,19 @@ const changePasswordSchema = z.object({
   newPassword: z.string().min(6),
 });
 
-router.get("/profile", authenticateJWT, getProfile);
+router.get("/profile", AuthMiddleware.isValidateJWT, getProfile);
 router.patch(
   "/profile",
-  authenticateJWT,
+  AuthMiddleware.isValidateJWT,
   validateBody(updateProfileSchema),
   updateProfile
 );
 router.post(
   "/change-password",
-  authenticateJWT,
+  AuthMiddleware.isValidateJWT,
   validateBody(changePasswordSchema),
   changePassword
 );
-router.delete("/delete", authenticateJWT, deleteUser);
+router.delete("/delete", AuthMiddleware.isValidateJWT, deleteUser);
 
 export default router;

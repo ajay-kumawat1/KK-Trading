@@ -1,37 +1,26 @@
 import dotenv from "dotenv";
-import { z } from "zod";
-
-// Load environment variables from .env file
 dotenv.config();
 
-// Define schema for environment variables validation
-const envSchema = z.object({
-  PORT: z.string().optional().default("5000"),
-  MONGO_URI: z.string().url(),
-  JWT_SECRET: z.string().min(10),
-  JWT_EXPIRES_IN: z.string().default("15m"),
-  REFRESH_TOKEN_SECRET: z.string().min(10),
-  REFRESH_TOKEN_EXPIRES_IN: z.string().default("7d"),
-  SENDGRID_API_KEY: z.string().min(10),
-  SENDGRID_FROM: z.string().email(),
-});
-
-// Parse and validate env variables
-const parsedEnv = envSchema.safeParse(process.env);
-
-if (!parsedEnv.success) {
-  console.error("❌ Invalid environment variables:", parsedEnv.error.format());
-  process.exit(1);
+interface IConfig {
+  PORT: number;
+  HOST: string;
+  MONGO_URI: string;
+  JWT_SECRET: string;
+  JWT_EXPIRES_IN: string;
+  REFRESH_TOKEN_SECRET: string;
+  REFRESH_TOKEN_EXPIRES_IN: string;
+  SENDGRID_API_KEY: string;
+  SENDGRID_FROM: string;
 }
 
-// Export strongly typed env variables
-export const env = {
-  PORT: Number(parsedEnv.data.PORT),
-  MONGO_URI: parsedEnv.data.MONGO_URI,
-  JWT_SECRET: parsedEnv.data.JWT_SECRET,
-  JWT_EXPIRES_IN: parsedEnv.data.JWT_EXPIRES_IN,
-  REFRESH_TOKEN_SECRET: parsedEnv.data.REFRESH_TOKEN_SECRET,
-  REFRESH_TOKEN_EXPIRES_IN: parsedEnv.data.REFRESH_TOKEN_EXPIRES_IN,
-  SENDGRID_API_KEY: parsedEnv.data.SENDGRID_API_KEY,
-  SENDGRID_FROM: parsedEnv.data.SENDGRID_FROM,
+export const config: IConfig = {
+  PORT: Number(process.env.PORT) || 3000,
+  HOST: process.env.HOST as string,
+  MONGO_URI: process.env.MONGO_URI as string,
+  JWT_SECRET: process.env.JWT_SECRET as string,
+  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN as string,
+  REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET as string,
+  REFRESH_TOKEN_EXPIRES_IN: process.env.REFRESH_TOKEN_EXPIRES_IN as string,
+  SENDGRID_API_KEY: process.env.SENDGRID_API_KEY as string,
+  SENDGRID_FROM: process.env.SENDGRID_FROM as string,
 };

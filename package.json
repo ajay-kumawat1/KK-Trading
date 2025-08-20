@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec ts-node src/server.ts",
-    "build": "tsc",
+    "dev": "npx tsc --b && nodemon dist/server.js",
+    "build": "npx tsc --build",
     "start": "node dist/server.js",
     "build-start": "npm run build && npm start"
   },
